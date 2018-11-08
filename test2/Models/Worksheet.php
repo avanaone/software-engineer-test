@@ -11,14 +11,8 @@ class Worksheet{
     protected $errors = [];
     protected $headers = null;
 
-    const RULES_COL_NUM = 5;
-    const RULES_HEADERS_NAMES = [
-        'Field_A*',
-        '#Field_B',
-        'Field_C',
-        'Field_D*',
-        'Field_E*',
-    ];
+    public $RULES_COL_NUM = null;
+    public $RULES_HEADERS_NAMES = null;
 
     public function __construct($filename){
         if($loaded = $this->loadSheet($filename)){
@@ -43,15 +37,16 @@ class Worksheet{
             }
             if(isset($errors["rowsErrors"])){
                 Table::open();
-                echo "<tr>";
-                    echo "<td>Row</td> <td>Error</td>";
-                echo "</tr>";
+                Table::row(
+                    Table::getColumn( "Row" ).
+                    Table::getColumn( "Error" )
+                );
                 foreach ($errors["rowsErrors"] as $key => $error) {
                     if($error) {
-                        echo "<tr>";
-                            echo "<td style='border:black 1.5px solid'>" . ($key+2) . "</td>";
-                            echo "<td style='border:black 1.5px solid'>" . $error . "</td>";
-                        echo "</tr>";
+                        Table::row(
+                            Table::getColumn( $key+2 ).
+                            Table::getColumn( $error )
+                        );
                     }
                 }
                 Table::close();
@@ -92,12 +87,18 @@ class Worksheet{
     public function verifyHeaders(){
         $errors = [];
         $headers = $this->headers = $this->getHeaders();
-        if(($hcount = count($headers)) != static::RULES_COL_NUM){
-            $errors []= 'Column count must be exactly 5! Got '.$hcount.' instead...';
-        }else{
+        if(
+            $this->RULES_COL_NUM
+            &&
+            ($hcount = count($headers)) != $this->RULES_COL_NUM
+        ){
+            $errors []= 'Column count must be exactly '.$this->RULES_COL_NUM.'! Got '.$hcount.' instead...';
+        }
+
+        if($this->RULES_HEADERS_NAMES){
             foreach ($headers as $key => $header) {
-                if($header !== static::RULES_HEADERS_NAMES[$key]){
-                    $errors []= 'Header '.$key.' must be labelled as '.static::RULES_HEADERS_NAMES[$key];
+                if($header !== $this->RULES_HEADERS_NAMES[$key]){
+                    $errors []= 'Header '.$key.' must be labelled as '.$this->RULES_HEADERS_NAMES[$key];
                 }
             }
         }
@@ -111,10 +112,10 @@ class Worksheet{
             $colError = '';
             foreach ($row as $key => $col) {
                 if(strpos($this->headers[$key],'*') && trim($col) === ''){
-                    $colError .= 'Missing value in '.$this->headers[$key].', ';
+                    $colError .= 'Missing value in '.trim($this->headers[$key],'*').', ';
                 }
                 if(strpos($this->headers[$key],'#') !== false && trim($col) !== '' && strpos(trim($col),' ')!==false){
-                    $colError .= $this->headers[$key].' should not contain any space, ';
+                    $colError .= trim($this->headers[$key],'#').' should not contain any space, ';
                 }
             }
             $errors []= rtrim($colError,', ');
