@@ -5,8 +5,6 @@ namespace Test2;
 use Test2\Models\Worksheet;
 
 class TypeAFile{
-    use \Test2\Libs\SheetHelper;
-
     public static function init(){
         return new static;
     }
