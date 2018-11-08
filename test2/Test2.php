@@ -34,7 +34,7 @@ use Test2\TypeBFile;
 class Test2{
     public function __construct(){
         TypeAFile::init()->processTypeAFile();
-        // echo TypeBFile::init()->processTypeBFile();
+        TypeBFile::init()->processTypeBFile();
     }
 
     public static function init(){
