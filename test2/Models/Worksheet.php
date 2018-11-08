@@ -2,11 +2,13 @@
 
 namespace Test2\Models;
 
+use Test2\Models\Table;
+
 class Worksheet{
     protected $activeSheet = null;
     protected $highestRow = null;
     protected $highestColumn = null;
-    protected $errors = null;
+    protected $errors = [];
     protected $headers = null;
 
     const RULES_COL_NUM = 5;
@@ -34,15 +36,34 @@ class Worksheet{
         $this->verifyHeaders();
         $this->verifyRows();
         if($errors = $this->errors()){
-            foreach ($errors as $key => $error) {
-                echo $error . "<br>";
+            if(isset($errors["headersErrors"])){
+                foreach ($errors["headersErrors"] as $key => $error) {
+                    echo $error . "<br>";
+                }
             }
-            die();
+            if(isset($errors["rowsErrors"])){
+                Table::open();
+                echo "<tr>";
+                    echo "<td>Row</td> <td>Error</td>";
+                echo "</tr>";
+                foreach ($errors["rowsErrors"] as $key => $error) {
+                    if($error) {
+                        echo "<tr>";
+                            echo "<td style='border:black 1.5px solid'>" . ($key+2) . "</td>";
+                            echo "<td style='border:black 1.5px solid'>" . $error . "</td>";
+                        echo "</tr>";
+                    }
+                }
+                Table::close();
+            }
+            // die();
         }
     }
 
     public function loadSheet($filename){
-        if($loaded = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx')->load($filename)){
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
+        if($loaded = $reader->load($filename)){
             return $loaded->getActiveSheet();
         }
         return false;
@@ -70,7 +91,7 @@ class Worksheet{
 
     public function verifyHeaders(){
         $errors = [];
-        $headers = $this->getHeaders();
+        $headers = $this->headers = $this->getHeaders();
         if(($hcount = count($headers)) != static::RULES_COL_NUM){
             $errors []= 'Column count must be exactly 5! Got '.$hcount.' instead...';
         }else{
@@ -80,15 +101,7 @@ class Worksheet{
                 }
             }
         }
-        if(count($errors)){
-            if($this->errors){
-                array_merge($this->errors,$errors);
-            }else{
-                $this->errors = $errors;
-            }
-        }else{
-            $this->headers = $headers;
-        }
+        $this->errors["headersErrors"] = $errors;
     }
 
     public function verifyRows(){
@@ -100,22 +113,13 @@ class Worksheet{
                 if(strpos($this->headers[$key],'*') && trim($col) === ''){
                     $colError .= 'Missing value in '.$this->headers[$key].', ';
                 }
-
-                if(strpos($this->headers[$key],'#') && trim($col) !== '' && count(explode(' ',trim($col)))){
-                    echo json_encode(explode(' ',trim($col)));
-                    // $colError .= $this->headers[$key].' should not contain any space, ';
-                    // echo "'".trim($col,' ')."'"."<br>";
+                if(strpos($this->headers[$key],'#') !== false && trim($col) !== '' && strpos(trim($col),' ')!==false){
+                    $colError .= $this->headers[$key].' should not contain any space, ';
                 }
             }
             $errors []= rtrim($colError,', ');
         }
-        if(count($errors)){
-            if($this->errors){
-                array_merge($this->errors,$errors);
-            }else{
-                $this->errors = $errors;
-            }
-        }
+        $this->errors["rowsErrors"] = $errors;
     }
 
     public function errors(){
