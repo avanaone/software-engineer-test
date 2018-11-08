@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php';
 
+\Test2\Models\Html::pre();
+
+
 // Test1
 $test1_input_1 = "a (b c (d e (f) g) h) i (j k)";
 $test1_input_2 = 2;
@@ -15,3 +18,6 @@ echo "<br><br><br><br>";
 
 echo "<--------- TEST 2 ---------->" . "<br>";
 Test2\Test2::init();
+
+
+\Test2\Models\Html::post();
