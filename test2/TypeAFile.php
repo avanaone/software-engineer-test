@@ -2,7 +2,7 @@
 
 namespace Test2;
 
-use Test2\Models\Worksheet;
+use Test2\Models\WorksheetA;
 
 class TypeAFile{
     public static function init(){
@@ -14,10 +14,8 @@ class TypeAFile{
     }
 
     public function getTypeAFile(){
-        $result = '';
-        $worksheet = new Worksheet( __DIR__ . '/../Type_A.xlsx' );
+        $worksheet = new WorksheetA( __DIR__ . '/../Type_A.xlsx' );
 
-        echo json_encode($worksheet->getRows());
-        return $result;
+        // echo json_encode($worksheet->getRows());
     }
 }

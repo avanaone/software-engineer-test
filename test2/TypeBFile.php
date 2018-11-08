@@ -2,6 +2,8 @@
 
 namespace Test2;
 
+use Test2\Models\WorksheetB;
+
 class TypeBFile{
     public static function init(){
         return new static;
@@ -12,7 +14,6 @@ class TypeBFile{
     }
 
     public function getTypeBFile(){
-        $type_B_filename = __DIR__ . '/../Type_B.xlsx';
-        return \PhpOffice\PhpSpreadsheet\IOFactory::load($type_B_filename)->getActiveSheet()->getCell('A1')->getValue();
+        $worksheet = new WorksheetB( __DIR__ . '/../Type_B.xlsx' );
     }
 }
