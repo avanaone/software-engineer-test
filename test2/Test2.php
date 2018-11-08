@@ -28,16 +28,29 @@ namespace Test2;
 // Row	Error
 // 3	Missing value in Field_A, Field_B should not contain any space
 
-use Test2\TypeAFile;
-use Test2\TypeBFile;
+use Test2\Models\WorksheetA;
+use Test2\Models\WorksheetB;
+
 
 class Test2{
-    public function __construct(){
-        TypeAFile::init()->processTypeAFile();
-        TypeBFile::init()->processTypeBFile();
+    //init the test2
+    public static function init(){
+        echo "Type A File";
+        static::processTypeAFile();
+
+        echo "Type B File";
+        static::processTypeBFile();
     }
 
-    public static function init(){
-        return new static;
+    //process type a file
+    public static function processTypeAFile(){
+        $worksheet = new WorksheetA( __DIR__ . '/../Type_A.xlsx' );
+        $worksheet->printErrors();
+    }
+
+    //process type b file
+    public static function processTypeBFile(){
+        $worksheet = new WorksheetB( __DIR__ . '/../Type_B.xlsx' );
+        $worksheet->printErrors();
     }
 }
