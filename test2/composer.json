@@ -1,0 +1,19 @@
+{
+    "name": "niban/avana-test",
+    "description": "My first package",
+    "type": "package",
+    "authors": [
+        {
+            "name": "Thacayaniban A/L Sweneson",
+            "email": "thacayaniban_ueki@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.5"
+    }
+}
