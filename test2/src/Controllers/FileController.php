@@ -43,7 +43,8 @@ class FileController
 			}
 		}
 		
-		return substr($requiredField,0,-1);
+		//return substr($requiredField,0,-1);
+        return $requiredField;
 	}
 	
 	public function getNoSpaceCol($arrStr)
@@ -57,7 +58,8 @@ class FileController
 			}
 		}
 		
-		return substr($noSpaceCol,0,-1);
+		//return substr($noSpaceCol,0,-1);
+        return $noSpaceCol;
 	}
 	
 	public function getFieldName($arrStr,$col)
@@ -74,7 +76,7 @@ class FileController
 		$error = '';
 		foreach ($arrStr as $col => $val)
 		{
-			$x=strval($col);
+			$x=strval($col).',';
 			if(strpos($requiredField, $x) !== false && trim($val)=='' )
 			{
 				$error = 'yes';
