@@ -1,0 +1,21 @@
+{
+    "name": "david/david-xsl",
+    "description": "Xsl Reader",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Kurniawan",
+            "email": "xproject7849@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "phpoffice/phpspreadsheet": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
