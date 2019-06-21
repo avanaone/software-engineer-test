@@ -69,10 +69,10 @@ It will be nice if new file type(`Type_C`) can be integrated by just adding `Typ
 ### Enjoy your test!
 
 
-# How to deploy
+# How to Running my test result
 
 1. Clone/fork this repo
 2. cd into the directory
 2. Run "composer install"
 3. Run "php -S localhost:8000"
-4. Run in the browser
+4. Run in your browser
