@@ -67,3 +67,12 @@ It will be nice if new file type(`Type_C`) can be integrated by just adding `Typ
 3. Incorporate design patterns in your code
 
 ### Enjoy your test!
+
+
+# How to deploy
+
+1. Clone/fork this repo
+2. cd into the directory
+2. Run "composer install"
+3. Run "php -S localhost:8000"
+4. Run in the browser
