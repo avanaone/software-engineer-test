@@ -91,6 +91,14 @@ class Xlsreader
 		return $errors;
 	}
 
+
+	/**
+	 * Validation Data
+	 *
+	 * @param      array  $data   The data
+	 *
+	 * @return     array
+	 */
 	public function validationData(array $data)
 	{
 		// Validation Column Header
@@ -107,19 +115,11 @@ class Xlsreader
 			foreach ($items as $i => $item) {
 				if (strpos($headers[$i], '*') !== false) {
 					if (!$item) {
-						$de = array(
-							'row' => $key,
-							'msg' => 'Missing value in '.$headers[$i]
-						);
 						$errors[$key][] = 'Missing value in '.$headers[$i];
 					}
 				}
 				if (strpos($headers[$i], '#') !== false) {
 					if ($this->spaceValidation($item)) {
-						$des = array(
-							'row' => $key,
-							'msg' => $headers[$i].' should not contain any space'
-						);
 						$errors[$key][] = $headers[$i].' should not contain any space';
 					}
 				}
@@ -129,6 +129,13 @@ class Xlsreader
 		return $errors;
 	}
 
+	/**
+	 * Check if string have space
+	 *
+	 * @param      string  $value  The value
+	 *
+	 * @return     boolean
+	 */
 	public function spaceValidation($value)
 	{
 		return preg_match("/(\r|\n|\t|\s)/", $value);
