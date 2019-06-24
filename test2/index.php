@@ -11,7 +11,7 @@ $typeA = $check->startRead('Type_A.xlsx');
 $responseA = $check->validationData($typeA);
 
 /**
- Type_B_FIX
+ Type_B
  */
 $typeB = $check->startRead('Type_B.xlsx');
 $responseB = $check->validationData($typeB);
