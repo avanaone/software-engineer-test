@@ -2,7 +2,7 @@
 
 namespace Test1;
 
-use Test1\Parentheses;
+use Models\Parentheses;
 
 class ParenthesesList{
     protected $collection = [];
