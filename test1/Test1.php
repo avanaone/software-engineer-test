@@ -15,7 +15,7 @@ namespace Test1;
 //
 // The function should return the index position of the ")" right after "h", in this case, the return value is 20.
 
-use Test1\ParenthesesList;
+use Test1\Models\ParenthesesList;
 
 class Test1{
 
