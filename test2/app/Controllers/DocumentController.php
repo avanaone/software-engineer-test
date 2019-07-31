@@ -147,47 +147,60 @@ class DocumentController
         return $return_val;
 
     }
-
+	public function getFieldName($field_name)
+	{
+		$field_name = str_replace('*','',$field_name);
+		$field_name = str_replace('#','',$field_name);
+		return $field_name;
+	}
     public function validateValue()
     {
         $header = $this->validateHeader();
         // print_r($header);
         $return_val = array();
         // print_r($this->content()['data']);
+        $result = '';
+
+        $result_array = array();
         foreach($this->content()['data'] as $key => $val)
         {
           //foreach every column
           
           if($key>0)
           {
+              $result = '';
               foreach($val as $col_key=>$col_val)
               {
                   if($col_val=='' || $col_val==null || empty($col_val))
                   {
                       if(array_key_exists($col_key,$header['required']))
                       {
-                        print_r($col_key);
-                        $return_val['error']['required'][$key][$col_key] = 'missing value in row '.($key+1).' '.$header['required'][$col_key]['field'].'';
+                        // print_r($col_key);
+                        $return_val['error']['required'][$key][$col_key] = 'missing value in row '.($key+1).' '.$this->getFieldName($header['required'][$col_key]['field']).'';
+                        $result.= "missing value in row ".($key+1)." ".$this->getFieldName($header['required'][$col_key]['field']).",";
+                        
                       }
                   }
                   if(strpos($col_val, ' ') !== false)
                   {
                     if(array_key_exists($col_key,$header['no_space']))
                     {
-                        print_r($col_key);
-                        $return_val['error']['no_space'][$key][$col_key] = ' '.$header['no_space'][$col_key]['field'].' should have no space in row '.($key+1).'';
+                        // print_r($col_key);
+                        $return_val['error']['no_space'][$key][$col_key] = ' '.$this->getFieldName($header['no_space'][$col_key]['field']).' should have no space in '.($key+1).'';
+                        $result.= $this->getFieldName($header['no_space'][$col_key]['field'])." should have no space in row ".($key+1).",";
                     }
                     
                   }
+                // $result.=$result_nospace.$result_required;
+                $result_array[($key+1)] = $result; 
               }
-          }
-            //compare based on key uisng in array
-        
-            //return collected error
+            }
+            
         }
-        // $return_val['collected_error'] = array_merge_recursive($return_val['error']['required'],$return_val['error']['no_space']);
+        // print($result);
+        // var_dump($result_array);
         
-        return $return_val;
+        return $result_array;
     }
     
 }
