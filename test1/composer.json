@@ -1,0 +1,19 @@
+{
+    "name": "rozi/test",
+    "description": "avana testing answer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "aidilrozi",
+            "email": "mohd.aidilrozi@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "1.8"
+    },
+    "autoload": {
+		"psr-4": {
+			"App\\": "app/"
+		}
+	}
+}
